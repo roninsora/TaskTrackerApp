@@ -34,8 +34,8 @@ public class TaskListController {
         return ResponseEntity.ok(listDTO);
     }
 
-    @GetMapping("/task-lists/{task_list_id}")
-    public ResponseEntity<TaskListDTO> getTaskList(@PathVariable UUID task_list_id){
+    @GetMapping("task-lists/{task_list_id}")
+    public ResponseEntity<TaskListDTO> getTaskList(@PathVariable UUID task_list_id) {
         Optional<TaskList> foundList = taskListService.getTaskList(task_list_id);
         return foundList
                 .map(taskListMapper::mapTo)
@@ -44,7 +44,7 @@ public class TaskListController {
     }
 
     @PostMapping("/task-lists")
-    public ResponseEntity<TaskListDTO> createTaskList(@RequestBody TaskListDTO taskListDTO){
+    public ResponseEntity<TaskListDTO> createTaskList(@RequestBody TaskListDTO taskListDTO) {
         TaskList taskList = taskListMapper.mapFrom(taskListDTO);
         TaskList savedTask = taskListService.createTaskList(taskList);
         return new ResponseEntity<>(taskListMapper.mapTo(savedTask), HttpStatus.OK);
@@ -52,8 +52,8 @@ public class TaskListController {
 
     @PatchMapping("/task-lists/{task_list_id}")
     public ResponseEntity<TaskListDTO> updateTaskList(@PathVariable UUID task_list_id,
-                                                      @RequestBody TaskListDTO taskListDTO){
-        if(!taskListService.isExist(task_list_id)){
+                                                      @RequestBody TaskListDTO taskListDTO) {
+        if (!taskListService.isExist(task_list_id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         TaskList taskList = taskListMapper.mapFrom(taskListDTO);
@@ -62,7 +62,7 @@ public class TaskListController {
     }
 
     @DeleteMapping("/task-lists/{task_list_id}")
-    public void deleteTaskList(@PathVariable UUID task_list_id){
+    public void deleteTaskList(@PathVariable UUID task_list_id) {
         taskListService.deleteTaskList(task_list_id);
     }
 }
