@@ -93,8 +93,8 @@ public class TaskRepoTests {
 
         Task saved = taskRepo.save(foundTask);
 
-        Assertions.assertThat(saved.getTitle()).isNotNull();
-        Assertions.assertThat(saved.getDescription()).isNotNull();
+        Assertions.assertThat(saved.getTitle()).isEqualTo("One");
+        Assertions.assertThat(saved.getDescription()).isEqualTo("1 changed to One");
     }
 
     @Test
