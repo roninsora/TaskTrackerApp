@@ -10,6 +10,7 @@ A robust RESTful API built with Spring Boot for managing projects, to-do lists, 
 * **Smart Updates**: Uses `PATCH` semantics to update only the fields provided in the request (e.g., updating just the status of a task).
 * **Prioritization**: Assign `HIGH`, `MEDIUM`, or `LOW` priority to tasks. Defaults to `MEDIUM` if not specified.
 * **Audit Fields**: Automatically maintains `created` and `updated` timestamps for all entities.
+* **Comprehensive Testing**: Full unit and integration testing coverage for the Service, Controller, and Repository layers using JUnit 5 and Mockito.
 
 ## 🛠 Tech Stack
 
