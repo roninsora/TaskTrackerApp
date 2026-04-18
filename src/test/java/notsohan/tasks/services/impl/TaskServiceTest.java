@@ -167,27 +167,3 @@ public class TaskServiceTest {
         verify(taskRepo).deleteByTaskListIdAndId(taskList.getId(), task1.getId());
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -43,7 +43,8 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/{id}")
-    public ResponseEntity<TaskDTO> getTask(@PathVariable UUID task_list_id, @PathVariable UUID id){
+    public ResponseEntity<TaskDTO> getTask(@PathVariable UUID task_list_id,
+                                           @PathVariable UUID id){
         Optional<Task> found = taskService.getTask(task_list_id, id);
         return found.map(taskMapper::mapTo)
                 .map(ResponseEntity::ok)
