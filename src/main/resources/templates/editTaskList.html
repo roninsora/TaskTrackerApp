@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Edit</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <div class="container">
+            <div>
+                <a th:href="@{/}">🏠 Home</a>
+                <a th:href="@{/}">&larr; Cancel</a>
+            </div>
+
+            <h2>Edit Task List</h2>
+            <form th:action="@{/web/task-lists/{id}/edit(id=${taskList.id})}" th:object="${taskList}" method="post">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" th:field="*{title}" required autocomplete="off"/>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" th:field="*{description}" autocomplete="off"/>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

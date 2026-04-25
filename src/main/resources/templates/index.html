@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Task Tracker</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Task Lists</h1>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Progress</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="list : ${taskLists}">
+                            <td class="text-primary"><a th:href="@{/web/task-lists/{id}(id=${list.id})}" th:text="${list.title}">Title</a></td>
+                            <td class="text-sub" th:text="${list.description}">Description</td>
+                            <td>
+                                <span th:text="${list.progress != null ? #numbers.formatPercent(list.progress, 0, 0) : '0%'}">0%</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/web/task-lists/{id}/edit(id=${list.id})}">Edit</a>
+                                <form th:action="@{/web/task-lists/{id}/delete(id=${list.id})}" method="post">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section-divider">
+                <h2>Create a New Task List</h2>
+                <form th:action="@{/web/task-lists}" th:object="${newTaskList}" method="post">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" th:field="*{title}" placeholder="e.g. Learn JPA" required autocomplete="off"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" th:field="*{description}" placeholder="Optional details..." autocomplete="off"/>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Create List</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

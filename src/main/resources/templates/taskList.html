@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tasks - <span th:text="${taskList.title}"></span></title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="mb-20">
+                <a th:href="@{/}" class="btn-secondary d-inline-block mr-15 btn-sm-alt">🏠 Home</a>
+                <a th:href="@{/}" class="text-sub d-inline-block">&larr; Back to Task Lists</a>
+            </div>
+
+            <div class="mb-30">
+                <h1><span th:text="${taskList.title}">List Title</span></h1>
+                <p class="text-sub" th:text="${taskList.description}">List Description</p>
+            </div>
+
+            <div class="table-container mb-40">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="task : ${tasks}">
+                        <td class="text-primary" th:text="${task.title}">Title</td>
+                        <td class="text-sub" th:text="${task.description}">Description</td>
+                        <td>
+                            <form th:if="${task.status.name() == 'OPEN'}" th:action="@{/web/task-lists/{taskListId}/tasks/{taskId}/close(taskListId=${taskList.id}, taskId=${task.id})}" method="post">
+                                <button type="submit" class="badge badge-open btn-badge" title="Click to Close Task">OPEN</button>
+                            </form>
+                            <span th:if="${task.status.name() != 'OPEN'}" class="badge" th:classappend="'badge-' + ${#strings.toLowerCase(task.status)}" th:text="${task.status}">CLOSED</span>
+                        </td>
+                        <td>
+                            <span class="badge" th:classappend="'badge-' + ${#strings.toLowerCase(task.priority)}" th:text="${task.priority}">MEDIUM</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/web/task-lists/{taskListId}/tasks/{taskId}/edit(taskListId=${taskList.id}, taskId=${task.id})}">Edit</a>
+
+                            <form th:action="@{/web/task-lists/{taskListId}/tasks/{taskId}/delete(taskListId=${taskList.id}, taskId=${task.id})}" method="post">
+                                <button type="submit" class="danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-divider">
+                <h2>Create a New Task</h2>
+                <form th:action="@{/web/task-lists/{taskListId}/tasks(taskListId=${taskList.id})}" th:object="${newTask}" method="post">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" th:field="*{title}" placeholder="Anything in mind??" required autocomplete="off"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" th:field="*{description}" placeholder="Optional details..." autocomplete="off"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select id="priority" th:field="*{priority}">
+                            <option value="LOW">Low</option>
+                            <option value="MEDIUM" selected>Medium</option>
+                            <option value="HIGH">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" th:field="*{status}">
+                            <option value="OPEN" selected>Open</option>
+                            <option value="CLOSED">Closed</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Create Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
