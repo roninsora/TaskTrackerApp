@@ -7,17 +7,17 @@
     </head>
     <body>
         <div class="container">
-            <div class="mb-20">
+            <div>
                 <a th:href="@{/}" class="btn-secondary d-inline-block mr-15 btn-sm-alt">🏠 Home</a>
                 <a th:href="@{/}" class="text-sub d-inline-block">&larr; Back to Task Lists</a>
             </div>
 
-            <div class="mb-30">
+            <div>
                 <h1><span th:text="${taskList.title}">List Title</span></h1>
                 <p class="text-sub" th:text="${taskList.description}">List Description</p>
             </div>
 
-            <div class="table-container mb-40">
+            <div class="table-container">
                 <table>
                     <thead>
                     <tr>
@@ -34,7 +34,7 @@
                         <td class="text-sub" th:text="${task.description}">Description</td>
                         <td>
                             <form th:if="${task.status.name() == 'OPEN'}" th:action="@{/web/task-lists/{taskListId}/tasks/{taskId}/close(taskListId=${taskList.id}, taskId=${task.id})}" method="post">
-                                <button type="submit" class="badge badge-open btn-badge" title="Click to Close Task">OPEN</button>
+                                <button type="submit" title="Click to Close Task">OPEN</button>
                             </form>
                             <span th:if="${task.status.name() != 'OPEN'}" class="badge" th:classappend="'badge-' + ${#strings.toLowerCase(task.status)}" th:text="${task.status}">CLOSED</span>
                         </td>
@@ -45,7 +45,7 @@
                             <a th:href="@{/web/task-lists/{taskListId}/tasks/{taskId}/edit(taskListId=${taskList.id}, taskId=${task.id})}">Edit</a>
 
                             <form th:action="@{/web/task-lists/{taskListId}/tasks/{taskId}/delete(taskListId=${taskList.id}, taskId=${task.id})}" method="post">
-                                <button type="submit" class="danger btn-sm">Delete</button>
+                                <button type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
