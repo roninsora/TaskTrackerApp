@@ -215,7 +215,7 @@ When creating a task via `TaskServiceImpl`, the application enforces specific bu
 ```bash
  ./mvnw clean install
 ```
-5.  Run the application using Maven/Gradle wrapper or the main class `TaskTrackerApplication`.
+5.  Run the application using Maven:
 ```bash
   ./mvnw spring-boot:run
 ```
