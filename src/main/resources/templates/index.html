@@ -20,13 +20,13 @@
                     </thead>
                     <tbody>
                         <tr th:each="list : ${taskLists}">
-                            <td class="text-primary"><a th:href="@{/web/task-lists/{id}(id=${list.id})}" th:text="${list.title}">Title</a></td>
+                            <td class="text-primary"><a th:href="@{/web/task-lists/{id}(id=${list.id})}" th:text="${list.title}" class="btn-secondary">Title</a></td>
                             <td class="text-sub" th:text="${list.description}">Description</td>
                             <td>
                                 <span th:text="${list.progress != null ? #numbers.formatPercent(list.progress, 0, 0) : '0%'}">0%</span>
                             </td>
                             <td>
-                                <a th:href="@{/web/task-lists/{id}/edit(id=${list.id})}">Edit</a>
+                                <a th:href="@{/web/task-lists/{id}/edit(id=${list.id})}" class="btn-secondary">Edit</a>
                                 <form th:action="@{/web/task-lists/{id}/delete(id=${list.id})}" method="post">
                                     <button type="submit">Delete</button>
                                 </form>

@@ -11,14 +11,12 @@ A robust RESTful API built with Spring Boot for managing projects, to-do lists, 
 * **Prioritization**: Assign `HIGH`, `MEDIUM`, or `LOW` priority to tasks. Defaults to `MEDIUM` if not specified.
 * **Audit Fields**: Automatically maintains `created` and `updated` timestamps for all entities.
 * **Comprehensive Testing**: Full unit and integration testing coverage for the Service, Controller, and Repository layers using JUnit 5 and Mockito.
-* **Web UI**: Includes a responsive web interface powered by Thymeleaf (`WebController`).
 
 ## 🛠 Tech Stack
 
 * **Java 21**: Core language.
 * **Spring Boot**: Framework for REST API creation.
 * **Spring Data JPA**: For database abstraction and repository management.
-* **Thymeleaf**: Server-side Java template engine for the web interface.
 * **ModelMapper**: For clean mapping between Database Entities and API DTOs.
 * **Lombok**: Reduces boilerplate code.
 * **Database**: Compatible with any SQL database (H2, PostgreSQL, MySQL) supported by Hibernate.
@@ -74,7 +72,7 @@ classDiagram
 
 The project follows a standard layered architecture:
 
-* `controllers`: REST controllers handling HTTP requests (`TaskController`, `TaskListController`, `WebController` for Thymeleaf web interface).
+* `controllers`: REST controllers handling HTTP requests (`TaskController`, `TaskListController`).
 * `domain.entities`: Database entities (`Task`, `TaskList`).
 * `domain.dtos`: Data Transfer Objects for API responses/requests.
 * `mappers`: Configuration and interfaces for object mapping.
@@ -109,22 +107,6 @@ The project follows a standard layered architecture:
 | `GET` | `/api/v1/task-lists/{list_id}/tasks/{id}` | Get a specific task details. |
 | `PATCH` | `/api/v1/task-lists/{list_id}/tasks/{id}` | Update a task (e.g., mark as CLOSED). |
 | `DELETE` | `/api/v1/task-lists/{list_id}/tasks/{id}` | Remove a task. |
-
-## 🌐 Web Application Paths
-
-| HTTP Method | Path | Description |
-| :--- | :--- | :--- |
-| `GET` | `/` | Home page - view all task lists. |
-| `POST` | `/web/task-lists` | Create a new task list. |
-| `GET` | `/web/task-lists/{id}` | View a specific task list and its tasks. |
-| `GET` | `/web/task-lists/{id}/edit` | Show form to edit a task list. |
-| `POST` | `/web/task-lists/{id}/edit` | Update a task list. |
-| `POST` | `/web/task-lists/{id}/delete` | Delete a task list. |
-| `POST` | `/web/task-lists/{taskListId}/tasks` | Add a new task to a list. |
-| `GET` | `/web/task-lists/{taskListId}/tasks/{taskId}/edit` | Show form to edit a task. |
-| `POST` | `/web/task-lists/{taskListId}/tasks/{taskId}/edit` | Update a task. |
-| `POST` | `/web/task-lists/{taskListId}/tasks/{taskId}/close` | Mark a task as closed. |
-| `POST` | `/web/task-lists/{taskListId}/tasks/{taskId}/delete` | Delete a task. |
 
 ## 📦 Data Models
 
@@ -219,3 +201,4 @@ When creating a task via `TaskServiceImpl`, the application enforces specific bu
 ```bash
   ./mvnw spring-boot:run
 ```
+  
