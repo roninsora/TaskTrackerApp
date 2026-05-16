@@ -137,7 +137,8 @@ public class TaskListServiceTests {
 
     @Test
     public void deleteTaskList_shouldDelete(){
-        taskListService.deleteTaskList(taskList1.getId());
-        verify(taskListRepo).deleteById(taskList1.getId());
+        TaskList taskList = new TaskList();
+        taskListService.delete(taskList);
+        verify(taskListRepo).delete(taskList);
     }
 }

@@ -1,27 +1,29 @@
 # Task Tracker App
 
-A robust RESTful API built with Spring Boot for managing projects, to-do lists, and individual tasks. This application supports task prioritization, status tracking, and automatic progress calculation for task lists.
+A robust RESTful API built with Spring Boot for managing projects, to-do lists, and individual tasks. This application supports task prioritization, status tracking, and automatic progress calculation for task lists. It also includes a responsive frontend built with HTML, Thymeleaf, and CSS.
 
-## 🚀 Features
+## Features
 
 * **Task List Management**: Create, read, update, and delete collections of tasks.
-* **Granular Task Control**: Manage individual tasks within specific lists.
 * **Automatic Progress Tracking**: The API automatically calculates the completion percentage (0.0 to 1.0) of a Task List based on how many tasks are marked `CLOSED`.
 * **Smart Updates**: Uses `PATCH` semantics to update only the fields provided in the request (e.g., updating just the status of a task).
-* **Prioritization**: Assign `HIGH`, `MEDIUM`, or `LOW` priority to tasks. Defaults to `MEDIUM` if not specified.
+* **Prioritization**: Assign `HIGH`, `MEDIUM`, or `LOW` priority to tasks. Defaults to `LOW` if not specified.
 * **Audit Fields**: Automatically maintains `created` and `updated` timestamps for all entities.
 * **Comprehensive Testing**: Full unit and integration testing coverage for the Service, Controller, and Repository layers using JUnit 5 and Mockito.
+* **User Interface**: A responsive frontend built using HTML with Thymeleaf templates, and CSS for easy interaction with the API.
 
 ## 🛠 Tech Stack
 
 * **Java 21**: Core language.
 * **Spring Boot**: Framework for REST API creation.
 * **Spring Data JPA**: For database abstraction and repository management.
+* **Thymeleaf**: Server-side Java template engine for web and standalone environments.
 * **ModelMapper**: For clean mapping between Database Entities and API DTOs.
 * **Lombok**: Reduces boilerplate code.
 * **Database**: Compatible with any SQL database (H2, PostgreSQL, MySQL) supported by Hibernate.
+* **Frontend**: HTML5 with Thymeleaf templates, CSS3.
 
-## 📐 Domain Model
+## Domain Model
 
 The core of the application is built on a bidirectional relationship between `TaskList` and `Task`, ensuring data integrity and easy navigation.
 
@@ -72,23 +74,34 @@ classDiagram
 
 The project follows a standard layered architecture:
 
-* `controllers`: REST controllers handling HTTP requests (`TaskController`, `TaskListController`).
+* `controllers`: REST controllers handling HTTP requests (`TaskController`, `TaskListController`) and Web controllers for frontend rendering.
 * `domain.entities`: Database entities (`Task`, `TaskList`).
 * `domain.dtos`: Data Transfer Objects for API responses/requests.
+* `exceptions`: Custom exception classes (e.g., `TaskNotFoundException`) and global exception handler (`GlobalExceptionHandler`).
 * `mappers`: Configuration and interfaces for object mapping.
-* `services`: Business logic (Interfaces implemented, implementation details pending).
+* `services`: Business logic and service implementations.
+* `resources.templates`: Thymeleaf HTML templates for the frontend.
+* `resources.static`: Static assets like CSS files and images.
 
-## 🚀 Features
+## API Endpoints
 
-* **Task Lists**: Create, Read, Update, and Delete (CRUD) lists to organize tasks.
-* **Task Management**: Add tasks to specific lists with details like Title, Description, and Due Date.
-* **Status Tracking**: Track tasks as `OPEN` or `CLOSED`.
-* **Prioritization**: Assign priorities (`HIGH`, `MEDIUM`, `LOW`) to tasks.
-* **Progress Monitoring**: *[Inferred]* DTOs suggest functionality to calculate the percentage of completed tasks within a list.
+### Web Interface (Frontend UI)
 
-## 🔌 API Endpoints
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/` | Home page displaying all task lists. |
+| `POST` | `/web/task-lists` | Create a new task list via form submission. |
+| `GET` | `/web/task-lists/{taskListId}` | View a specific task list and its tasks. |
+| `GET` | `/web/task-lists/{id}/edit` | Show form to edit a task list. |
+| `POST` | `/web/task-lists/{id}/edit` | Submit edited task list. |
+| `POST` | `/web/task-lists/{task_list_id}/delete` | Delete a task list. |
+| `POST` | `/web/task-lists/{taskListId}/tasks` | Create a new task within a list. |
+| `POST` | `/web/task-lists/{taskListId}/tasks/{taskId}/delete`| Delete a specific task. |
+| `POST` | `/web/task-lists/{taskListId}/tasks/{taskId}/close` | Mark a specific task as CLOSED. |
+| `GET` | `/web/task-lists/{taskListId}/tasks/{taskId}/edit` | Show form to edit a specific task. |
+| `POST` | `/web/task-lists/{taskListId}/tasks/{taskId}/edit` | Submit edited task. |
 
-### Task Lists
+### REST API - Task Lists
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -98,7 +111,7 @@ The project follows a standard layered architecture:
 | `PATCH` | `/api/v1/task-lists/{id}` | Update a task list. |
 | `DELETE` | `/api/v1/task-lists/{id}` | Delete a task list. |
 
-### Tasks
+### REST API - Tasks
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -108,7 +121,7 @@ The project follows a standard layered architecture:
 | `PATCH` | `/api/v1/task-lists/{list_id}/tasks/{id}` | Update a task (e.g., mark as CLOSED). |
 | `DELETE` | `/api/v1/task-lists/{list_id}/tasks/{id}` | Remove a task. |
 
-## 📦 Data Models
+## Data Models
 
 ### Task List
 Represents a container for tasks.
@@ -122,7 +135,7 @@ Represents an individual unit of work.
     * `TaskStatus`: OPEN, CLOSED
     * `TaskPriority`: HIGH, MEDIUM, LOW
 
-## 📦 Payload Examples
+## Payload Examples
 
 ### Creating a Task List
 **POST** `/api/v1/task-lists`
@@ -130,7 +143,7 @@ Represents an individual unit of work.
 ```json
 {
   "title": "First Entry",
-  "description": "This is first entry as a Task List",
+  "description": "This is first entry as a Task List"
 }
 ```
 ### Creating a Task
@@ -182,7 +195,7 @@ When creating a task via `TaskServiceImpl`, the application enforces specific bu
      - Priority defaults to `MEDIUM` if not provided.
      - Status is forced to `OPEN` upon creation.
 
-## 🏃‍♂️ How to Run
+## How to Run
 
 1.  **Clone the repository**.
 ```Bash
@@ -201,4 +214,3 @@ When creating a task via `TaskServiceImpl`, the application enforces specific bu
 ```bash
   ./mvnw spring-boot:run
 ```
-  

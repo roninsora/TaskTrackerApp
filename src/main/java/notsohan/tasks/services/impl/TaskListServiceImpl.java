@@ -1,13 +1,13 @@
 package notsohan.tasks.services.impl;
 
 import notsohan.tasks.domain.entities.TaskList;
+import notsohan.tasks.exceptions.TaskNotFoundException;
 import notsohan.tasks.repositories.TaskListRepo;
 import notsohan.tasks.services.TaskListService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,11 +65,11 @@ public class TaskListServiceImpl implements TaskListService {
 
             existingTaskList.setUpdated(LocalDateTime.now());
             return taskListRepo.save(existingTaskList);
-        }).orElseThrow(() -> new IllegalArgumentException("Task list not found"));
+        }).orElseThrow(() -> new TaskNotFoundException("Task list not found"));
     }
 
     @Override
-    public void deleteTaskList(UUID id) {
-        taskListRepo.deleteById(id);
+    public void delete(TaskList taskList) {
+        taskListRepo.delete(taskList);
     }
 }

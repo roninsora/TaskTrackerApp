@@ -156,9 +156,15 @@ public class TaskListControllerTest {
 
     @Test
     void deleteTaskList_DeletesTaskListAndReturnsOk() throws Exception {
+        UUID taskListId = UUID.randomUUID();
+        TaskList taskList = new TaskList();
+
+        when(taskListService.getTaskList(taskListId)).thenReturn(Optional.of(taskList));
+
         mockMvc.perform(delete("/api/v1/task-lists/{id}", taskListID))
                 .andExpect(status().isOk());
 
-        verify(taskListService, times(1)).deleteTaskList(taskListID);
+        verify(taskListService, times(1)).getTaskList(taskListId);
+        verify(taskListService, times(1)).delete(taskList);
     }
 }

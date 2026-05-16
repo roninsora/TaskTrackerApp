@@ -12,4 +12,5 @@ public interface TaskService {
     Optional<Task> getTask(UUID tasklistId, UUID id);
     Task updateTask(UUID taskListId, UUID id, Task task);
     void deleteTask(UUID taskListId, UUID id);
+    boolean isExist(UUID id);
 }

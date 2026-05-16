@@ -85,6 +85,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public boolean isExist(UUID id) {
+        return taskRepo.existsById(id);
+    }
+
+    @Override
     @Transactional
     public void deleteTask(UUID taskListId, UUID id) {
         taskRepo.deleteByTaskListIdAndId(taskListId, id);

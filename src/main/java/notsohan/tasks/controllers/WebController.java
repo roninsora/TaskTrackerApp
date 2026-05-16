@@ -4,9 +4,10 @@ import notsohan.tasks.domain.dtos.TaskListDTO;
 import notsohan.tasks.domain.entities.Task;
 import notsohan.tasks.domain.entities.TaskList;
 import notsohan.tasks.domain.entities.TaskStatus;
+import notsohan.tasks.exceptions.TaskNotFoundException;
 import notsohan.tasks.mappers.Mapper;
-import notsohan.tasks.services.impl.TaskListServiceImpl;
-import notsohan.tasks.services.impl.TaskServiceImpl;
+import notsohan.tasks.services.TaskListService;
+import notsohan.tasks.services.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +21,12 @@ import java.util.UUID;
 @Controller
 public class WebController {
 
-    private final TaskListServiceImpl taskListService;
-    private final TaskServiceImpl taskService;
+    private final TaskListService taskListService;
+    private final TaskService taskService;
     private final Mapper<TaskList, TaskListDTO> mapper;
 
-    public WebController(TaskListServiceImpl taskListService,
-                         TaskServiceImpl taskService,
+    public WebController(TaskListService taskListService,
+                         TaskService taskService,
                          Mapper<TaskList, TaskListDTO> mapper){
         this.taskListService = taskListService;
         this.taskService = taskService;
@@ -54,7 +55,7 @@ public class WebController {
     public String viewTaskList(@PathVariable UUID taskListId,
                                Model model) {
         TaskList taskList = taskListService.getTaskList(taskListId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid task list Id:" + taskListId));
+                .orElseThrow(() -> new TaskNotFoundException("Invalid task list Id:" + taskListId));
 
         model.addAttribute("taskList", taskList);
         model.addAttribute("tasks", taskService.listTask(taskListId));
@@ -66,7 +67,7 @@ public class WebController {
     public String editTaskListForm(@PathVariable UUID id,
                                    Model model) {
         TaskList taskList = taskListService.getTaskList(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid task list Id:" + id));
+                .orElseThrow(() -> new TaskNotFoundException("Invalid task list Id:" + id));
 
         model.addAttribute("taskList", taskList);
         return "editTaskList";
@@ -79,9 +80,11 @@ public class WebController {
         return "redirect:/";
     }
 
-    @PostMapping("/web/task-lists/{id}/delete")
-    public String deleteTaskList(@PathVariable UUID id) {
-        taskListService.deleteTaskList(id);
+    @PostMapping("/web/task-lists/{task_list_id}/delete")
+    public String deleteTaskList(@PathVariable UUID task_list_id) {
+        TaskList taskList = taskListService.getTaskList(task_list_id).orElseThrow(() ->
+                new TaskNotFoundException("Task not found with id: "+task_list_id));
+        taskListService.delete(taskList);
         return "redirect:/";
     }
 
@@ -112,7 +115,7 @@ public class WebController {
     public String editTaskForm(@PathVariable UUID taskListId,
                                @PathVariable UUID taskId, Model model) {
         Task task = taskService.getTask(taskListId, taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid task Id:" + taskId));
+                .orElseThrow(() -> new TaskNotFoundException("Invalid task Id:" + taskId));
 
         model.addAttribute("task", task);
         model.addAttribute("taskListId", taskListId);

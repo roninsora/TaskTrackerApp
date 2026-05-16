@@ -2,6 +2,7 @@ package notsohan.tasks.controllers;
 
 import notsohan.tasks.domain.dtos.TaskDTO;
 import notsohan.tasks.domain.entities.Task;
+import notsohan.tasks.exceptions.TaskNotFoundException;
 import notsohan.tasks.mappers.Mapper;
 import notsohan.tasks.services.TaskService;
 import org.springframework.http.HttpStatus;
@@ -45,16 +46,21 @@ public class TaskController {
     @GetMapping("/tasks/{id}")
     public ResponseEntity<TaskDTO> getTask(@PathVariable UUID task_list_id,
                                            @PathVariable UUID id){
-        Optional<Task> found = taskService.getTask(task_list_id, id);
-        return found.map(taskMapper::mapTo)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Task found = taskService.getTask(task_list_id, id).orElseThrow(() ->
+                new TaskNotFoundException("Task not found with id: "+id));
+
+        return ResponseEntity.ok(taskMapper.mapTo(found));
     }
 
     @PatchMapping("/tasks/{id}")
     public ResponseEntity<TaskDTO> updateTask(@PathVariable UUID task_list_id,
                                               @PathVariable UUID id,
                                               @RequestBody TaskDTO taskDTO){
+
+        if(!taskService.isExist(id)){
+            throw new TaskNotFoundException("Task not found with id: "+id);
+        }
+
         Task task = taskMapper.mapFrom(taskDTO);
         Task updated = taskService.updateTask(task_list_id, id, task);
         return new ResponseEntity<>(taskMapper.mapTo(updated), HttpStatus.OK);
@@ -63,6 +69,9 @@ public class TaskController {
     @DeleteMapping("/tasks/{id}")
     public void deleteTask(@PathVariable UUID task_list_id,
                            @PathVariable UUID id){
+        taskService.getTask(task_list_id, id).orElseThrow(()->
+                new TaskNotFoundException("Task not found with id: "+id));
+
         taskService.deleteTask(task_list_id, id);
     }
 }

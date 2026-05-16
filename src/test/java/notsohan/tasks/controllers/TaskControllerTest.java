@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import notsohan.tasks.domain.dtos.TaskDTO;
 import notsohan.tasks.domain.entities.Task;
 import notsohan.tasks.mappers.Mapper;
-import notsohan.tasks.services.impl.TaskServiceImpl;
+import notsohan.tasks.services.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ public class TaskControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private TaskServiceImpl taskService;
+    private TaskService taskService;
 
     @MockitoBean
     private Mapper<Task, TaskDTO> taskMapper;
