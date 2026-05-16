@@ -18,7 +18,6 @@ public class GlobalExceptionHandler {
                         "Task Not Found");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
-
     /*
     * There's a @RestControllerAdvice annotation too, which is the same
     * as @ControllerAdvice but automatically handles the @ResponseBody as well.
